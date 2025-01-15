@@ -73,8 +73,8 @@ def process_file(file_path):
             found_terms = find_matches(english_terms, product_string, glossary)
             translated_string = translate_string(product_string, found_terms)
             translations.append({
-                'Code Location': product_code,
-                'Product String': product_string,
+                'String Ref': product_code,
+                'English String': product_string,
                 'Translated String': translated_string,
                 'NB Legend Term(s)': ', '.join(found_terms) if found_terms else None
             })
