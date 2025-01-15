@@ -11,7 +11,6 @@ app = Flask(__name__)
 CORS(app, resources={r"/translate": {"origins": "https://ocean-translation-tool.webflow.io"}})
 
 # Flask app configuration
-app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['OUTPUT_FOLDER'] = 'outputs'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
