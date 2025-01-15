@@ -36,7 +36,7 @@ def translate_string(text, found_terms):
         glossary_terms = "\n".join(found_terms)
         prompt = f"Translate the following string to Canadian French. Ensure you use the appropriate translations for these terms:\n\n{glossary_terms}\n\n{text}"
     else:
-        prompt = f"Translate the following string to Canadian French:\n\nText: {text}"
+        prompt = f"Translate the following string to Canadian French:\n\n{text}"
 
     response = openai.ChatCompletion.create(
         model="gpt-4o",
