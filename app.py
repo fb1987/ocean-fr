@@ -5,6 +5,10 @@ import openai
 import time
 from flask import Flask, request, jsonify, send_file, render_template
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app, resources={r"/translate": {"origins": "https://ocean-translation-tool.webflow.io"}})
 
 # Flask app configuration
 app = Flask(__name__)
@@ -81,11 +85,13 @@ def process_file(file_path):
     pd.DataFrame(translations).to_excel(output_file, index=False)
     return output_file
 
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
 
-@app.route('/translate', methods=['POST'])
+
+@app.route("/", methods=["GET"])
+def index():
+    return "OceanFR Translation Tool is Live!"
+
+@app.route("/translate", methods=["POST"])
 def translate():
     # Handle file upload
     if 'file' not in request.files:
@@ -102,6 +108,7 @@ def translate():
     # Process the file
     output_file = process_file(file_path)
     return send_file(output_file, as_attachment=True)
+
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))  # Default to port 5000 for local testing
