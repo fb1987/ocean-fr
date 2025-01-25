@@ -21,7 +21,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Function to check for overlap between NB Legend terms and product strings
 def find_matches(english_terms, product_string, glossary):
-    product_string = str(product_string).lower()  
+    product_string = str(product_string).lower()  # Convert product string to lowercase
     found_terms = []
     for term in english_terms:
         if isinstance(term, str):
@@ -58,10 +58,8 @@ def process_file(file_path):
     # Load the uploaded file
     if file_path.endswith('.csv'):
         df = pd.read_csv(file_path)
-        output_format = 'csv'
     else:
         df = pd.read_excel(file_path)
-        output_format = 'xlsx'
 
     # Prepare for translation
     product_strings = df['English'].to_dict()
@@ -80,23 +78,10 @@ def process_file(file_path):
                 'NB Legend Term(s)': ', '.join(found_terms) if found_terms else None
             })
 
-    # Create dynamic output filename
-    input_filename = os.path.basename(file_path)
-    base_name, ext = os.path.splitext(input_filename)
-    if output_format == 'csv':
-        output_filename = f"{base_name}_fr.csv"
-    else:
-        output_filename = f"{base_name}_fr.xlsx"
-
-    # Save results in the appropriate format
-    output_file = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
-    if output_format == 'csv':
-        pd.DataFrame(translations).to_csv(output_file, index=False)
-    else:
-        pd.DataFrame(translations).to_excel(output_file, index=False)
-    
+    # Save results
+    output_file = os.path.join(app.config['OUTPUT_FOLDER'], 'translated_file.xlsx')
+    pd.DataFrame(translations).to_excel(output_file, index=False)
     return output_file
-
 
 
 
@@ -118,7 +103,7 @@ def translate():
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(file_path)
 
-    # Process the file and get the dynamic output filename
+    # Process the file
     output_file = process_file(file_path)
     return send_file(output_file, as_attachment=True)
 
